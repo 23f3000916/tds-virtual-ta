@@ -4,7 +4,7 @@ import json
 import sqlite3
 import numpy as np
 import re
-from fastapi import FastAPI, HTTPException, File, UploadFile, Form, Body
+from fastapi import FastAPI, HTTPException, File, UploadFile, Form, Body, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -727,6 +727,10 @@ async def health_check():
 @app.get("/")
 async def root():
     return {"message": "Virtual TA is running!"}
+
+@app.api_route("/", methods=["GET", "POST"])
+async def root(request: Request):
+    return {"message": "Virtual TA is running!", "method": request.method}
 
 
 if __name__ == "__main__":
