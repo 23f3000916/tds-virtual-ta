@@ -27,7 +27,7 @@ SIMILARITY_THRESHOLD = 0.68  # Lowered threshold for better recall
 MAX_RESULTS = 10  # Increased to get more context
 load_dotenv()
 MAX_CONTEXT_CHUNKS = 4  # Increased number of chunks per source
-API_KEY = os.getenv("")  # Get API key from environment variable
+API_KEY = os.getenv("API_KEY")  # Get API key from environment variable
 
 # Models
 class QueryRequest(BaseModel):
@@ -596,7 +596,7 @@ def parse_llm_response(response):
         }
 
 # Define API routes
-@app.post("/query")
+@app.post("/api/")
 async def query_knowledge_base(request: QueryRequest):
     try:
         # Log the incoming request
