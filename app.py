@@ -563,23 +563,18 @@ def parse_llm_response(response):
                 # Extract URL and text using more flexible patterns
                 url_match = re.search(r'URL:\s*\[(.*?)\]|url:\s*\[(.*?)\]|\[(http[^\]]+)\]|URL:\s*(http\S+)|url:\s*(http\S+)|(http\S+)', line, re.IGNORECASE)
                 text_match = re.search(r'Text:\s*\[(.*?)\]|text:\s*\[(.*?)\]|[""](.*?)[""]|Text:\s*"(.*?)"|text:\s*"(.*?)"', line, re.IGNORECASE)
-                
+
                 if url_match:
                     # Find the first non-None group from the regex match
                     url = next((g for g in url_match.groups() if g), "")
-                    url = url.strip()
-                    
-                    # Default text if no match
-                    text = "Source reference"
-                    
-                    # If we found a text match, use it
+                    url = url.strip().rstrip(".,;")  # <-- This line strips trailing punctuation
+
+                    text = "Source reference"  # Default text
                     if text_match:
-                        # Find the first non-None group from the regex match
                         text_value = next((g for g in text_match.groups() if g), "")
                         if text_value:
                             text = text_value.strip()
-                    
-                    # Only add if we have a valid URL
+
                     if url and url.startswith("http"):
                         links.append({"url": url, "text": text})
         
